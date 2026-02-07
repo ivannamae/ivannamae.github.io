@@ -4,22 +4,24 @@
 const gallery = document.getElementById("gallery");
 
 if (gallery) {
+  // Convert children to an array to sort them
   const works = Array.from(gallery.children);
 
-  // 1. Sort everything by date (Newest First)
+  // 1. Sort by date (Newest First)
   works.sort((a, b) => {
     return new Date(b.dataset.date) - new Date(a.dataset.date);
   });
 
-  // 2. Clear the gallery and re-add sorted items
+  // 2. Clear the gallery
   gallery.innerHTML = "";
   
-  // 3. Check if we should limit the display (for the "Works" tab)
-  const limit = gallery.getAttribute("data-limit");
-  
+  // 3. Check if there is a limit (e.g., 20) set on this specific page
+  const limitAttr = gallery.getAttribute("data-limit");
+  const limit = limitAttr ? parseInt(limitAttr) : null;
+
   works.forEach((work, index) => {
-    if (limit && index >= parseInt(limit)) {
-      // If we are over the limit, don't show it
+    // If a limit exists and we've reached it, hide the extra items
+    if (limit && index >= limit) {
       work.style.display = "none"; 
     }
     gallery.appendChild(work);
@@ -33,13 +35,17 @@ const viewer = document.getElementById("fullscreen-viewer");
 const viewerImg = document.getElementById("fullscreen-image");
 const closeBtn = document.getElementById("close-viewer");
 
+// Open viewer
 document.querySelectorAll(".fullscreen-trigger").forEach(img => {
   img.addEventListener("click", () => {
-    viewer.style.display = "flex";
-    viewerImg.src = img.src;
+    if (viewer && viewerImg) {
+      viewer.style.display = "flex";
+      viewerImg.src = img.src;
+    }
   });
 });
 
+// Close viewer when clicking 'X' or the dark background
 if (viewer) {
     viewer.addEventListener("click", (e) => {
         if (e.target === viewer || e.target === closeBtn) {
