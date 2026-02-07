@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ivanna Mae — Press & Exhibitions</title>
+  <title>Ivanna Mae — Press</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -34,20 +34,27 @@
 
 <main class="content">
   <section>
-    <h2>Exhibitions</h2>
+    <h2>Selected Press & Exhibitions</h2>
     <ul style="list-style: none; padding: 0;">
-      <li>2025 — Exhibition Title, Gallery Name, City</li>
-      <li>2024 — Group Show, Space Name, City</li>
-    </ul>
-  </section>
-
-  <section style="margin-top: 3rem;">
-    <h2>Press</h2>
-    <ul style="list-style: none; padding: 0;">
-      <li><em>Publication Name</em> — "Article Title," 2024</li>
+      <li><strong>2024</strong> — <em>Organic Form</em>, Solo Exhibition, Gallery Name</li>
+      <li><strong>2023</strong> — Featured Artist, <em>Art Monthly Magazine</em></li>
     </ul>
   </section>
 </main>
+
+<div id="fullscreen-viewer">
+  <span id="close-viewer">×</span>
+  <div class="viewer-image-side">
+    <button id="prev-btn" class="nav-btn">❮</button>
+    <img id="viewer-img" src="">
+    <button id="next-btn" class="nav-btn">❯</button>
+  </div>
+  <div class="viewer-text-side">
+    <h2 id="viewer-title"></h2>
+    <p id="viewer-meta" class="meta"></p>
+    <p id="viewer-desc" class="description"></p>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
