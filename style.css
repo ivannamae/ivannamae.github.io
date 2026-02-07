@@ -1,94 +1,77 @@
 /* =====================================================
-   FONTS — CHANGE HERE
-   =====================================================
-   To change fonts:
-   1. Replace the Google Fonts import
-   2. Update --header-font or --body-font
-*/
-
+   GLOBAL SETTINGS & FONTS
+   ===================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Inter:wght@300;400&display=swap');
 
 :root {
-  --header-font: "Playfair Display", serif;
-  --body-font: "Inter", sans-serif;
-
-  --nav-bg: #dbeeff;   /* Light blue strip behind tabs */
-  --nav-text: #333;   /* Dark grey tab text */
+  --header-font: "Playfair Display", serif; /* */
+  --body-font: "Inter", sans-serif;          /* */
+  --nav-bg: #dbeeff;                         /* */
+  --nav-text: #333;                          /* */
+  
+  /* EDIT THIS URL TO CHANGE YOUR HEADER IMAGE SITE-WIDE */
+  --header-bg-image: url('header-bg.jpg'); 
 }
-
-/* =====================================================
-   GLOBAL BASE STYLES
-   ===================================================== */
 
 body {
   margin: 0;
   font-family: var(--body-font);
-  line-height: 2; /* Double-spaced body text */
-  background:
-    var(--page-bg-color, transparent)
-    url(var(--page-bg-image, none)) center / cover no-repeat fixed;
-
+  line-height: 2;
+  background: var(--page-bg-color, #ffffff);
   opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
+  animation: fadeIn 0.6s ease forwards;      /* */
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
+@keyframes fadeIn { to { opacity: 1; } }
 
 /* =====================================================
-   HEADER
+   HEADER & NAVIGATION
    ===================================================== */
-
 .site-header {
   height: 45vh;
+  background: var(--header-bg-image) center / cover no-repeat fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .header-overlay {
-  height: 100%;
+  flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.1); /* Subtle tint to help text pop */
 }
 
 .site-title {
   font-family: var(--header-font);
-  font-size: 6rem;        /* Change header size here */
-  letter-spacing: 0.4em; /* Change letter spacing here */
+  font-size: 6rem;
+  letter-spacing: 0.4em;
   font-weight: 300;
   text-align: center;
+  margin: 0;                                 /* */
 }
-
-/* =====================================================
-   NAVIGATION BAR
-   ===================================================== */
 
 .site-nav {
   background: var(--nav-bg);
   padding: 0.75rem 0;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.5rem;                               /* */
 }
 
-.site-nav a,
-.dropbtn {
+.site-nav a, .dropbtn {
   text-decoration: none;
   color: var(--nav-text);
   font-size: 1rem;
+  font-family: var(--body-font);
   background: none;
   border: none;
   cursor: pointer;
-  font-family: var(--body-font);
 }
 
-/* =====================================================
-   DROPDOWN — HOVER ONLY (WORKS)
-   ===================================================== */
-
-.dropdown {
-  position: relative;
-}
+/* DROPDOWN LOGIC */
+.dropdown { position: relative; }
 
 .dropdown-content {
   display: none;
@@ -97,6 +80,7 @@ body {
   min-width: 220px;
   padding: 0.5rem 0;
   z-index: 10;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
 .dropdown-content a {
@@ -105,125 +89,50 @@ body {
   text-align: left;
 }
 
-/* IMPORTANT:
-   Dropdown appears on hover ON ALL PAGES */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+.dropdown:hover .dropdown-content { display: block; }
 
 /* =====================================================
-   CONTENT LAYOUT
+   GALLERY & MASONRY (From your original code)
    ===================================================== */
-
-.content {
-  max-width: 1200px;
-  margin: auto;
-  padding: 3rem;
-}
-
-/* DEFAULT: LEFT-ALIGNED TEXT (ALL NON-WORKS PAGES) */
-.content p,
-.content h2,
-.content ul {
-  text-align: left;
-}
-
-/* =====================================================
-   WORKS-ONLY CENTERING
-   =====================================================
-   Any page with class="works-page" will be centered
-*/
-
-.works-page .content p,
-.works-page .content h2,
-.works-page .content ul,
-.works-page figcaption {
-  text-align: center;
-}
-
-/* =====================================================
-   GALLERY / MASONRY
-   ===================================================== */
+.content { max-width: 1200px; margin: auto; padding: 3rem; }
+.works-page .content { text-align: center; } /* */
 
 .gallery {
   column-count: 3;
-  column-gap: 2rem;
+  column-gap: 2rem;                          /* */
 }
 
-.artwork {
-  break-inside: avoid;
-  margin-bottom: 2rem;
-  position: relative;
-}
+.artwork { break-inside: avoid; margin-bottom: 2rem; position: relative; }
+.artwork img { width: 100%; display: block; cursor: zoom-in; }
 
-.artwork img {
-  width: 100%;
-  display: block;
-  cursor: zoom-in;
-}
-
-/* Hover caption */
 figcaption {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   background: rgba(255,255,255,0.9);
   padding: 0.75rem;
   font-size: 0.85rem;
   opacity: 0;
   transform: translateY(10px);
-  transition: all 0.3s ease;
+  transition: all 0.3s ease;                 /* */
 }
 
-.artwork:hover figcaption {
-  opacity: 1;
-  transform: translateY(0);
-}
+.artwork:hover figcaption { opacity: 1; transform: translateY(0); }
 
-/* =====================================================
-   FULLSCREEN VIEWER
-   ===================================================== */
-
+/* FULLSCREEN VIEWER */
 #fullscreen-viewer {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.9);
   z-index: 100;
+  justify-content: center;
+  align-items: center;
 }
 
-#fullscreen-viewer img {
-  max-width: 90%;
-  max-height: 90%;
-  margin: auto;
-  display: block;
-}
-
-#close-viewer {
-  position: absolute;
-  top: 2rem;
-  right: 3rem;
-  font-size: 3rem;
-  color: white;
-  cursor: pointer;
-}
-
-/* =====================================================
-   MOBILE REFINEMENT
-   ===================================================== */
+#fullscreen-viewer img { max-width: 90%; max-height: 90%; }
+#close-viewer { position: absolute; top: 2rem; right: 3rem; font-size: 3rem; color: white; cursor: pointer; }
 
 @media (max-width: 768px) {
-  .gallery {
-    column-count: 1;
-  }
-
-  .site-title {
-    font-size: 3rem;
-    letter-spacing: 0.25em;
-  }
-
-  .content {
-    padding: 1.5rem;
-  }
+  .gallery { column-count: 1; }
+  .site-title { font-size: 3rem; letter-spacing: 0.2em; }
 }
