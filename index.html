@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ivanna Mae — Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+   
+<!-- IMPORTANT:
+     class="works-page" enables centered text ONLY here
+-->
+<body class="works-page" style="--page-bg-image: url('bg-works.jpg');">
+
+<header class="site-header">
+  <div class="header-overlay">
+    <h1 class="site-title">IVANNA&nbsp;&nbsp;MAE</h1>
+  </div>
+
+  <nav class="site-nav">
+    <!-- HOME TAB -->
+    <a href="index.html">Home</a>
+
+    <!-- WORKS TAB -->
+    <div class="dropdown"> 
+      <button class="dropbtn">Works ▾</button>
+      <div class="dropdown-content">
+        <a href="ceramics.html">Ceramics</a>
+        <a href="digital.html">Digital Art</a>
+        <a href="mixed-media.html">Mixed Media Sculpture</a>
+        <a href="drawing-painting.html">Drawing & Painting</a>
+        <a href="photography.html">Photography</a>
+      </div>
+    </div>
+
+    <a href="about.html">About</a>
+    <a href="press.html">Press</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main class="content">
+
+<!-- HOME WELCOME MESSAGE -->
+<section>
+  <h2 style="font-size: 2.2rem;">
+    Welcome — thank you for visiting.
+  </h2>
+  <p>
+    This site presents selected works by Ivanna Mae across ceramics,
+    digital art, mixed media sculpture, drawing, painting, and photography.
+  </p>
+</section>
+
+<section>
+  <h2>Artist Statement</h2>
+  <p>
+    Replace this paragraph with your full artist statement.
+  </p>
+</section>
+
+<section class="gallery">
+
+  <figure class="artwork">
+    <img src="art1.jpg" loading="lazy" class="fullscreen-trigger">
+    <figcaption>
+      Ivanna Mae, <em>Artwork Title</em>, January 2026, ceramic and glaze
+    </figcaption>
+  </figure>
+
+</section>
+
+</main>
+
+<div id="fullscreen-viewer">
+  <span id="close-viewer">×</span>
+  <img id="fullscreen-image">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
