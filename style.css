@@ -99,3 +99,10 @@ body {
   .viewer-text-side { border-left: none; padding-left: 0; }
   .gallery { column-count: 1; }
 }
+/* Add this to the bottom of your style.css */
+.artwork figcaption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #333;
+}
