@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ivanna Mae — Press & Exhibitions</title>
+  <title>Ivanna Mae — Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-</head>
-
+</head>  
+   
+<!-- IMPORTANT:
+     class="works-page" enables centered text ONLY here
+-->
 <body>
 
 <header class="site-header">
@@ -34,27 +37,32 @@
 
 <main class="content">
 
-  <section>
-    <h2>Exhibitions</h2>
-    <ul>
-      <li>Exhibition Title — Gallery Name, City, 2025</li>
-      <li>Group Show — Space Name, City, 2024</li>
-    </ul>
-  </section>
+<!-- HOME WELCOME MESSAGE -->
+<section>
+  <h2 style="font-size: 2.2rem;">
+    Welcome — thank you for visiting.
+  </h2>
+  <p>
+    This site presents selected works by Ivanna Mae across ceramics,
+    digital art, mixed media sculpture, drawing, painting, and photography.
+  </p>
+</section>
 
-  <!-- =========================
-       PRESS
-       =========================
-       Add press mentions, articles, interviews
-  -->
-  <section>
-    <h2>Press</h2>
-    <ul>
-      <li>Publication Name — Article Title, Year</li>
-      <li>Interview — Platform Name, Year</li>
-    </ul>
-  </section>
+    <img src="art1.jpg" loading="lazy" class="fullscreen-trigger">
+    <figcaption>
+      Ivanna Mae, <em>Artwork Title</em>, January 2026, ceramic and glaze
+    </figcaption>
+  </figure>
+
+</section>
 
 </main>
+
+<div id="fullscreen-viewer">
+  <span id="close-viewer">×</span>
+  <img id="fullscreen-image">
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

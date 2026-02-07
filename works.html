@@ -6,51 +6,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
+
+<!-- ⚠️ DO NOT MOVE THIS CLASS -->
 <body class="works-page" style="--page-bg-color:#ffffff;">
+
+<body>
 
 <header class="site-header">
   <div class="header-overlay">
     <h1 class="site-title">IVANNA&nbsp;&nbsp;MAE</h1>
   </div>
+
   <nav class="site-nav">
-    <a href="index.html">Home</a>
-    <div class="dropdown">
-      <a href="works.html" class="dropbtn">Works ▾</a>
-      <div class="dropdown-content">
-        <a href="ceramics.html">Ceramics</a>
-        <a href="digital.html">Digital Art</a>
-        <a href="mixed-media.html">Mixed Media Sculpture</a>
-        <a href="drawing-painting.html">Drawing & Painting</a>
-        <a href="photography.html">Photography</a>
-      </div>
+  <a href="index.html">Home</a>
+  <div class="dropdown">
+    <a href="works.html" class="dropbtn">Works ▾</a> 
+    <div class="dropdown-content">
+      <a href="ceramics.html">Ceramics</a>
+      <a href="digital.html">Digital Art</a>
+      <a href="mixed-media.html">Mixed Media Sculpture</a>
+      <a href="drawing-painting.html">Drawing & Painting</a>
+      <a href="photography.html">Photography</a>
     </div>
-    <a href="about.html">About</a>
-    <a href="press.html">Press</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+  </div>
+  <a href="about.html">About</a>
+  <a href="press.html">Press</a>
+  <a href="contact.html">Contact</a>
+</nav>
 </header>
 
 <main class="content">
-  <section>
-    <h2>Artist Statement</h2>
-    <p>Replace this with your full artist statement. This text is centered because of the "works-page" class.</p>
-  </section>
 
-  <section>
-    <h2>Newest Work</h2>
-    <section class="gallery" id="gallery">
-      <figure class="artwork" data-date="2024-03-02">
-        <img src="art1.jpg" loading="lazy" class="fullscreen-trigger">
-        <figcaption>Ivanna Mae, <em>Title Here</em>, 2024, ceramic and glaze</figcaption>
-      </figure>
-      <figure class="artwork" data-date="2024-02-21">
-        <img src="art2.jpg" loading="lazy" class="fullscreen-trigger">
-        <figcaption>Ivanna Mae, <em>Title Here</em>, 2024, sculpture</figcaption>
-      </figure>
-    </section>
+<section>
+  <h2>Artist Statement</h2>
+  <p>
+    Replace this with your full artist statement.
+    This text is centered ONLY because this is a Works page.
+  </p>
+</section>
+
+<!-- NEWEST WORK -->
+<section>
+  <h2>Newest Work</h2>
+
+  <!--
+    IMPORTANT:
+    - data-date format MUST be YYYY-MM-DD
+    - Images auto-sort newest → oldest
+  -->
+
+  <section class="gallery" id="gallery">
+
+    <figure class="artwork" data-date="2024-03-02">
+      <img src="art1.jpg" loading="lazy" class="fullscreen-trigger">
+      <figcaption>
+        Ivanna Mae, <em>Title Here</em>, March 2 2024, ceramic and glaze
+      </figcaption>
+    </figure>
+
+    <figure class="artwork" data-date="2024-02-21">
+      <img src="art2.jpg" loading="lazy" class="fullscreen-trigger">
+      <figcaption>
+        Ivanna Mae, <em>Title Here</em>, February 21 2024, mixed media sculpture
+      </figcaption>
+    </figure>
+
+    <!-- Add up to 20 works here -->
   </section>
+</section>
+
 </main>
 
+<!-- FULLSCREEN VIEWER -->
 <div id="fullscreen-viewer">
   <span id="close-viewer">×</span>
   <img id="fullscreen-image">
