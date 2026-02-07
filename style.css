@@ -1,35 +1,34 @@
 /* =====================================================
-   GLOBAL SETTINGS & FONTS
+   GLOBAL SETTINGS
    ===================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Inter:wght@300;400&display=swap');
 
 :root {
-  --header-font: "Playfair Display", serif; /* */
-  --body-font: "Inter", sans-serif;          /* */
-  --nav-bg: #dbeeff;                         /* */
-  --nav-text: #333;                          /* */
-  
-  /* EDIT THIS URL TO CHANGE YOUR HEADER IMAGE SITE-WIDE */
-  --header-bg-image: url('header-bg.jpg'); 
+  --header-font: "Playfair Display", serif;
+  --body-font: "Inter", sans-serif;
+  --nav-bg: #dbeeff;
+  --nav-text: #333;
 }
 
 body {
   margin: 0;
   font-family: var(--body-font);
   line-height: 2;
-  background: var(--page-bg-color, #ffffff);
+  /* CLEAN WHITE BACKGROUND */
+  background: #ffffff; 
   opacity: 0;
-  animation: fadeIn 0.6s ease forwards;      /* */
+  animation: fadeIn 0.6s ease forwards;
 }
 
 @keyframes fadeIn { to { opacity: 1; } }
 
 /* =====================================================
-   HEADER & NAVIGATION
+   HEADER WITH BACKGROUND IMAGE
    ===================================================== */
 .site-header {
   height: 45vh;
-  background: var(--header-bg-image) center / cover no-repeat fixed;
+  /* THIS APPLIES THE IMAGE TO ALL PAGES */
+  background: url('header-bg.jpg') center / cover no-repeat fixed;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -40,7 +39,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1); /* Subtle tint to help text pop */
+  background: rgba(255, 255, 255, 0.15); /* Tint to help title readability */
 }
 
 .site-title {
@@ -49,15 +48,16 @@ body {
   letter-spacing: 0.4em;
   font-weight: 300;
   text-align: center;
-  margin: 0;                                 /* */
+  margin: 0;
 }
 
+/* NAVIGATION */
 .site-nav {
   background: var(--nav-bg);
   padding: 0.75rem 0;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;                               /* */
+  gap: 1.5rem;
 }
 
 .site-nav a, .dropbtn {
@@ -70,9 +70,8 @@ body {
   cursor: pointer;
 }
 
-/* DROPDOWN LOGIC */
+/* DROPDOWN */
 .dropdown { position: relative; }
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -82,26 +81,16 @@ body {
   z-index: 10;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
-
-.dropdown-content a {
-  display: block;
-  padding: 0.6rem 1rem;
-  text-align: left;
-}
-
+.dropdown-content a { display: block; padding: 0.6rem 1rem; text-align: left; }
 .dropdown:hover .dropdown-content { display: block; }
 
 /* =====================================================
-   GALLERY & MASONRY (From your original code)
+   CONTENT & GALLERY
    ===================================================== */
 .content { max-width: 1200px; margin: auto; padding: 3rem; }
-.works-page .content { text-align: center; } /* */
+.works-page .content { text-align: center; } 
 
-.gallery {
-  column-count: 3;
-  column-gap: 2rem;                          /* */
-}
-
+.gallery { column-count: 3; column-gap: 2rem; }
 .artwork { break-inside: avoid; margin-bottom: 2rem; position: relative; }
 .artwork img { width: 100%; display: block; cursor: zoom-in; }
 
@@ -113,12 +102,11 @@ figcaption {
   font-size: 0.85rem;
   opacity: 0;
   transform: translateY(10px);
-  transition: all 0.3s ease;                 /* */
+  transition: all 0.3s ease;
 }
-
 .artwork:hover figcaption { opacity: 1; transform: translateY(0); }
 
-/* FULLSCREEN VIEWER */
+/* VIEWER */
 #fullscreen-viewer {
   display: none;
   position: fixed;
@@ -128,7 +116,6 @@ figcaption {
   justify-content: center;
   align-items: center;
 }
-
 #fullscreen-viewer img { max-width: 90%; max-height: 90%; }
 #close-viewer { position: absolute; top: 2rem; right: 3rem; font-size: 3rem; color: white; cursor: pointer; }
 
