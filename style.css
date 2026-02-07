@@ -1,5 +1,5 @@
 /* =====================================================
-   GLOBAL SETTINGS
+   GLOBAL SETTINGS & HEADER (Same as before)
    ===================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Inter:wght@300;400&display=swap');
 
@@ -13,21 +13,16 @@
 body {
   margin: 0;
   font-family: var(--body-font);
-  line-height: 2;
-  /* CLEAN WHITE BACKGROUND */
-  background: #ffffff; 
+  line-height: 1.8;
+  background: #ffffff;
   opacity: 0;
   animation: fadeIn 0.6s ease forwards;
 }
 
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* =====================================================
-   HEADER WITH BACKGROUND IMAGE
-   ===================================================== */
 .site-header {
   height: 45vh;
-  /* THIS APPLIES THE IMAGE TO ALL PAGES */
   background: url('header-bg.jpg') center / cover no-repeat fixed;
   display: flex;
   flex-direction: column;
@@ -39,7 +34,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.15); /* Tint to help title readability */
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .site-title {
@@ -51,7 +46,6 @@ body {
   margin: 0;
 }
 
-/* NAVIGATION */
 .site-nav {
   background: var(--nav-bg);
   padding: 0.75rem 0;
@@ -70,7 +64,6 @@ body {
   cursor: pointer;
 }
 
-/* DROPDOWN */
 .dropdown { position: relative; }
 .dropdown-content {
   display: none;
@@ -85,41 +78,89 @@ body {
 .dropdown:hover .dropdown-content { display: block; }
 
 /* =====================================================
-   CONTENT & GALLERY
+   GALLERY MASONRY (Main Pages)
    ===================================================== */
 .content { max-width: 1200px; margin: auto; padding: 3rem; }
+/* Only pages with .works-page on body will center content */
 .works-page .content { text-align: center; } 
 
 .gallery { column-count: 3; column-gap: 2rem; }
-.artwork { break-inside: avoid; margin-bottom: 2rem; position: relative; }
-.artwork img { width: 100%; display: block; cursor: zoom-in; }
+.artwork { break-inside: avoid; margin-bottom: 2rem; position: relative; cursor: pointer; }
+.artwork img { width: 100%; display: block; transition: 0.3s; }
+.artwork:hover img { opacity: 0.8; }
 
-figcaption {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(255,255,255,0.9);
-  padding: 0.75rem;
-  font-size: 0.85rem;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-}
-.artwork:hover figcaption { opacity: 1; transform: translateY(0); }
-
-/* VIEWER */
+/* =====================================================
+   NEW: SPLIT-SCREEN VIEWER (Image Left / Text Right)
+   ===================================================== */
 #fullscreen-viewer {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.9);
-  z-index: 100;
-  justify-content: center;
-  align-items: center;
+  background: white; /* Clean professional white background */
+  z-index: 1000;
+  padding: 50px;
+  display: flex;
+  flex-direction: row; /* Side-by-side */
+  gap: 40px;
 }
-#fullscreen-viewer img { max-width: 90%; max-height: 90%; }
-#close-viewer { position: absolute; top: 2rem; right: 3rem; font-size: 3rem; color: white; cursor: pointer; }
 
-@media (max-width: 768px) {
+.viewer-image-side {
+  flex: 2; /* Takes up 2/3 of screen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #f9f9f9;
+}
+
+.viewer-image-side img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.viewer-text-side {
+  flex: 1; /* Takes up 1/3 of screen */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  border-left: 1px solid #eee;
+  padding-left: 40px;
+}
+
+.viewer-text-side h2 { font-family: var(--header-font); font-size: 2rem; margin-bottom: 5px; }
+.viewer-text-side .meta { font-style: italic; color: #666; margin-bottom: 20px; }
+.viewer-text-side .description { line-height: 1.6; }
+
+/* SLIDER BUTTONS */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.1);
+  color: black;
+  border: none;
+  font-size: 2rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.nav-btn:hover { background: rgba(0,0,0,0.3); }
+#prev-btn { left: 10px; }
+#next-btn { right: 10px; }
+
+#close-viewer {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+@media (max-width: 900px) {
+  #fullscreen-viewer { flex-direction: column; padding: 20px; overflow-y: auto; }
+  .viewer-text-side { border-left: none; padding-left: 0; margin-top: 20px; }
   .gallery { column-count: 1; }
-  .site-title { font-size: 3rem; letter-spacing: 0.2em; }
 }
