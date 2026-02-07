@@ -1,11 +1,11 @@
 [
   {
-    "id": "vessel-01",
-    "images": ["ceramic1-front.jpg", "ceramic1-side.jpg", "ceramic1-back.jpg"],
-    "title": "Ceramic Vessel I",
+    "id": "bloody-pots1",
+    "images": ["bloody-pots1.jpg", "bloody-pots2.jpg", "bloody-pots3.jpg", "bloody-pots4.jpg", "bloody-pots5.jpg", "bloody-pots6.jpg"],
+    "title": "Viscera Pots",
     "date": "2024",
-    "material": "Stone-ware & Cobalt Glaze",
-    "description": "This piece explores the tension between organic forms and industrial finishes. The multiple angles highlight the shifting silhouette of the rim.",
+    "material": "Ceramic",
+    "description": "Amalgamation of over 12 pots smashed together in a pile with strands of viscera oozing out from every opening, decorated in red glaze. A human heart is placed in the center with a little white flower growing proudly out of the aorta. New life can grow out of all things, even the most visceral.",
     "category": "ceramics"
   },
   {
