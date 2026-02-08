@@ -2,20 +2,11 @@ let currentArtList = [];
 let currentIndex = 0;
 let isJsonMode = false;
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-function formatDate(dateString) {
-  if (!dateString || !dateString.includes('-')) return dateString || "";
-  const parts = dateString.split('-');
-  const month = parseInt(parts[1]) - 1;
-  return `${monthNames[month]} ${parts[0]}`;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const gallery = document.getElementById("gallery");
   const viewer = document.getElementById("fullscreen-viewer");
 
-  // --- 1. DYNAMIC GALLERY (art.json) ---
+  // 1. DYNAMIC GALLERY (For Works/Medium pages)
   if (gallery) {
     isJsonMode = true;
     const category = gallery.getAttribute("data-category");
@@ -23,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("art.json")
       .then(response => response.json())
       .then(data => {
-        // Filter by category
+        // Filter by category or show all
         currentArtList = (category === "all") ? data : data.filter(item => item.category === category);
         
         gallery.innerHTML = ""; 
@@ -31,13 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
           const figure = document.createElement("figure");
           figure.className = "artwork";
           
+          // Using item.images[0] as the primary image
           figure.innerHTML = `
-            <div class="img-container">
-              <img src="${item.images[0]}" alt="${item.title}">
-            </div>
+            <img src="${item.images[0]}" alt="${item.title}">
             <figcaption class="gallery-caption">
               <strong>${item.title}</strong><br>
-              ${formatDate(item.date)} | ${item.material}
+              ${item.date} | ${item.material}
             </figcaption>
           `;
 
@@ -45,26 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
           gallery.appendChild(figure);
         });
       })
-      .catch(err => console.error("Could not load art.json:", err));
+      .catch(err => console.error("Error: art.json could not be loaded.", err));
   }
 
-  // --- 2. MANUAL IMAGES (index.html / home.html) ---
-  // This looks for your <img src="art1.jpg" class="fullscreen-trigger">
-  const manualImages = document.querySelectorAll('.fullscreen-trigger');
-  manualImages.forEach(img => {
+  // 2. MANUAL TRIGGER (For index.html/home.html)
+  const triggers = document.querySelectorAll('.fullscreen-trigger');
+  triggers.forEach(img => {
     img.addEventListener('click', () => {
-        isJsonMode = false;
-        const viewerImg = document.getElementById("viewer-img");
-        viewerImg.src = img.src;
-        document.getElementById("viewer-title").innerText = img.alt || "Artwork";
-        document.getElementById("viewer-meta").innerText = "";
-        document.getElementById("viewer-desc").innerText = "";
-        viewer.style.display = "flex";
-        document.body.style.overflow = "hidden";
+      isJsonMode = false;
+      document.getElementById("viewer-img").src = img.src;
+      document.getElementById("viewer-title").innerText = img.alt || "";
+      document.getElementById("viewer-meta").innerText = "";
+      document.getElementById("viewer-desc").innerText = "";
+      viewer.style.display = "flex";
+      document.body.style.overflow = "hidden";
     });
   });
 
-  // --- 3. VIEWER CONTROLS ---
+  // 3. VIEWER CONTROLS
   const closeBtn = document.getElementById("close-viewer");
   if (closeBtn) {
     closeBtn.onclick = () => {
@@ -73,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  // Next/Prev Buttons
   document.getElementById("next-btn").onclick = (e) => {
     e.stopPropagation();
     if (!isJsonMode) return;
@@ -95,7 +84,7 @@ function openViewer(index) {
   
   document.getElementById("viewer-img").src = item.images[0];
   document.getElementById("viewer-title").innerText = item.title;
-  document.getElementById("viewer-meta").innerText = `${formatDate(item.date)} | ${item.material}`;
+  document.getElementById("viewer-meta").innerText = `${item.date} | ${item.material}`;
   document.getElementById("viewer-desc").innerText = item.description || "";
 
   viewer.style.display = "flex";
