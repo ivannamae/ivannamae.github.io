@@ -16,8 +16,10 @@ async function loadGallery() {
     const response = await fetch('art.json');
     const artworks = await response.json();
     
-    // Sort Newest to Oldest (including month)
-    artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
+   // Replace the sorting line in your script.js with this:
+artworks.sort((a, b) => {
+  return new Date(b.date.toString()) - new Date(a.date.toString());
+});
 
     const pageCategory = gallery.getAttribute("data-category");
     gallery.innerHTML = ""; 
