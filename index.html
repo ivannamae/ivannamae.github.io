@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>  
-<body style="--page-bg-color: #e8f7f3;">
+<body>
 
 <header class="site-header">
   <div class="header-overlay">
@@ -34,10 +34,24 @@
   <section>
     <h2 style="font-size: 2.2rem;">Welcome — thank you for visiting.</h2>
     <p>This site presents selected works by Ivanna Mae across various media.</p>
+    
+    <img src="art1.jpg" alt="Featured Artwork" class="fullscreen-trigger">
+  </section>
+</main>
 
 <div id="fullscreen-viewer">
   <span id="close-viewer">×</span>
-  <img id="fullscreen-image">
+  <div class="viewer-image-side">
+    <button id="prev-btn" class="nav-btn">❮</button>
+    <img id="viewer-img" src="">
+    <button id="next-btn" class="nav-btn">❯</button>
+  </div>
+  <div class="viewer-text-side">
+    <h2 id="viewer-title"></h2>
+    <p id="viewer-meta" style="color: #666;"></p>
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+    <p id="viewer-desc"></p>
+  </div>
 </div>
 
 <script src="script.js"></script>
