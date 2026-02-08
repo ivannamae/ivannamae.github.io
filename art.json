@@ -6,17 +6,7 @@
     "date": "2024-10",
     "dimensions": "12 x 10 x 8 in",
     "material": "Ceramic",
-    "description": "Amalgamation of over 12 pots smashed together in a pile with strands of viscera oozing out from every opening, decorated in red glaze. A human heart is placed in the center with a little white flower growing proudly out of the aorta. New life can grow out of all things, even the most visceral.",
-    "category": "ceramics"
-  },
-  {
-    "id": "ceramics1",
-    "images": ["ceramics1.jpg", "ceramics2.jpg", "ceramics2.jpg"],
-    "title": "Viscera Pots",
-    "date": "2024-04",
-    "dimensions": "12 x 10 x 8 in",
-    "material": "Ceramic",
     "description": "Amalgamation of over 12 pots smashed together...",
     "category": "ceramics"
-  },
+  }
 ]
