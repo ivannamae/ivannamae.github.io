@@ -106,3 +106,41 @@ body {
   color: #333;
   text-align: center;
 }
+
+/* Ensure the gallery items have a visible structure */
+.artwork {
+  display: block;
+  width: 100%;
+  margin-bottom: 3.5rem;
+  cursor: pointer;
+  break-inside: avoid;
+}
+
+.artwork img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.artwork:hover img {
+  opacity: 0.8;
+}
+
+/* Style for the new labels */
+.gallery-caption {
+  margin-top: 15px;
+  font-family: var(--body-font);
+  font-size: 0.95rem;
+  color: #222;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Ensure the viewer side-panel text is readable */
+.viewer-text-side .meta {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
