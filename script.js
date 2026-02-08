@@ -1,53 +1,90 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const gallery = document.getElementById("gallery");
-    const viewer = document.getElementById("fullscreen-viewer");
-    let currentArtList = [];
-    let currentIndex = 0;
+let currentArt = null;
+let currentImgIndex = 0;
 
-    // 1. Load Data
-    fetch('art.json')
-        .then(response => response.json())
-        .then(data => {
-            const pageCategory = gallery?.getAttribute("data-category");
-            
-            if (pageCategory === "featured") {
-                // RANDOMIZE for Home Page
-                currentArtList = data.sort(() => 0.5 - Math.random()).slice(0, 3);
-                renderGallery(currentArtList);
-            } else if (pageCategory) {
-                // Newest for Works/Media
-                data.sort((a, b) => new Date(b.date) - new Date(a.date));
-                currentArtList = (pageCategory === "all") ? data : data.filter(a => a.category === pageCategory);
-                renderGallery(currentArtList);
-            }
-        });
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    function renderGallery(list) {
-        gallery.innerHTML = "";
-        list.forEach((art, index) => {
-            const figure = document.createElement("figure");
-            figure.className = "artwork";
-            figure.style.animation = `fadeIn ${0.3 + index * 0.2}s ease-out`;
-            
-            figure.innerHTML = `
-                <img src="${art.images[0]}" alt="${art.title}">
-                <figcaption class="gallery-caption">
-                    <strong>${art.title}</strong><br>${art.material}
-                </figcaption>
-            `;
-            figure.onclick = () => openViewer(index, list);
-            gallery.appendChild(figure);
-        });
-    }
+function formatDate(dateString) {
+  if (!dateString || !dateString.includes('-')) return dateString || "";
+  const parts = dateString.split('-');
+  return `${monthNames[parseInt(parts[1]) - 1]} ${parts[0]}`;
+}
 
-    function openViewer(index, list) {
-        currentIndex = index;
-        const art = list[currentIndex];
-        document.getElementById("viewer-img").src = art.images[0];
-        document.getElementById("viewer-title").innerText = art.title;
-        document.getElementById("viewer-desc").innerText = art.description || "";
-        viewer.style.display = "flex";
-    }
+async function loadGallery() {
+  const gallery = document.getElementById("gallery");
+  if (!gallery) return;
 
-    document.getElementById("close-viewer").onclick = () => viewer.style.display = "none";
-});
+  try {
+    const response = await fetch('art.json?v=' + new Date().getTime());
+    const artworks = await response.json();
+    
+    artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const pageCategory = gallery.getAttribute("data-category");
+    gallery.innerHTML = ""; 
+
+    artworks.forEach(art => {
+      if (pageCategory === "all" || art.category === pageCategory) {
+        const figure = document.createElement("figure");
+        figure.className = "artwork";
+        
+        const displayDate = formatDate(art.date);
+        const dims = art.dimensions ? `, ${art.dimensions}` : "";
+        const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
+
+        figure.innerHTML = `
+          <div class="img-container">
+            <img src="${art.images[0]}" alt="${art.title}" 
+                 onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Image+File+Not+Found';">
+          </div>
+          <figcaption class="gallery-caption">${captionText}</figcaption>
+        `;
+        
+        figure.onclick = () => openViewer(art);
+        gallery.appendChild(figure);
+      }
+    });
+  } catch (error) {
+    console.error("Error loading gallery:", error);
+  }
+}
+
+function openViewer(art) {
+  currentArt = art;
+  currentImgIndex = 0;
+  document.getElementById("fullscreen-viewer").style.display = "flex";
+  updateViewerContent();
+}
+
+function updateViewerContent() {
+  const vImg = document.getElementById("viewer-img");
+  vImg.src = currentArt.images[currentImgIndex];
+  
+  const displayDate = formatDate(currentArt.date);
+  const dims = currentArt.dimensions ? ` | ${currentArt.dimensions}` : "";
+  
+  document.getElementById("viewer-title").innerText = currentArt.title;
+  document.getElementById("viewer-meta").innerText = `${displayDate}${dims} | ${currentArt.material}`;
+  document.getElementById("viewer-desc").innerText = currentArt.description || "";
+
+  const hasMultiple = currentArt.images.length > 1;
+  document.getElementById("prev-btn").style.display = hasMultiple ? "block" : "none";
+  document.getElementById("next-btn").style.display = hasMultiple ? "block" : "none";
+}
+
+document.getElementById("next-btn").onclick = (e) => {
+  e.stopPropagation();
+  currentImgIndex = (currentImgIndex + 1) % currentArt.images.length;
+  updateViewerContent();
+};
+
+document.getElementById("prev-btn").onclick = (e) => {
+  e.stopPropagation();
+  currentImgIndex = (currentImgIndex - 1 + currentArt.images.length) % currentArt.images.length;
+  updateViewerContent();
+};
+
+document.getElementById("close-viewer").onclick = () => {
+  document.getElementById("fullscreen-viewer").style.display = "none";
+};
+
+window.onload = loadGallery;
