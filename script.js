@@ -6,9 +6,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 function formatDate(dateString) {
   if (!dateString || !dateString.includes('-')) return dateString || "";
   const parts = dateString.split('-');
-  const year = parts[0];
-  const month = parseInt(parts[1]);
-  return `${monthNames[month - 1]} ${year}`;
+  return `${monthNames[parseInt(parts[1]) - 1]} ${parts[0]}`;
 }
 
 async function loadGallery() {
@@ -19,7 +17,6 @@ async function loadGallery() {
     const response = await fetch('art.json?v=' + new Date().getTime());
     const artworks = await response.json();
     
-    // Sort Newest to Oldest based on the YYYY-MM date
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
@@ -35,10 +32,11 @@ async function loadGallery() {
         const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
 
         figure.innerHTML = `
-          <img src="${art.images[0]}" 
-               alt="${art.title}" 
-               style="min-height: 250px; background: #f0f0f0; display: block;"
-               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Image+Not+Found';">
+          <div class="img-container">
+            <img src="${art.images[0]}" 
+                 alt="${art.title}" 
+                 onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Check+Image+Filename';">
+          </div>
           <figcaption class="gallery-caption">${captionText}</figcaption>
         `;
         
@@ -47,7 +45,7 @@ async function loadGallery() {
       }
     });
   } catch (error) {
-    console.error("Error loading gallery data:", error);
+    console.error("Could not load art.json. Ensure the file is not empty.", error);
   }
 }
 
@@ -62,7 +60,6 @@ function updateViewerContent() {
   const vImg = document.getElementById("viewer-img");
   vImg.src = currentArt.images[currentImgIndex];
   
-  // Viewer label formatting
   const displayDate = formatDate(currentArt.date);
   const dims = currentArt.dimensions ? ` | ${currentArt.dimensions}` : "";
   
@@ -82,4 +79,13 @@ document.getElementById("next-btn").onclick = (e) => {
 };
 
 document.getElementById("prev-btn").onclick = (e) => {
-  e.stopPropagation
+  e.stopPropagation();
+  currentImgIndex = (currentImgIndex - 1 + currentArt.images.length) % currentArt.images.length;
+  updateViewerContent();
+};
+
+document.getElementById("close-viewer").onclick = () => {
+  document.getElementById("fullscreen-viewer").style.display = "none";
+};
+
+window.onload = loadGallery;
