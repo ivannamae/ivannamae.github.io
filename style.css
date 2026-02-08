@@ -1,32 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Inter:wght@300;400&display=swap');
-
-:root {
-  --header-font: "Playfair Display", serif;
-  --body-font: "Inter", sans-serif;
-  --nav-bg: #dbeeff;
-  --nav-text: #333;
+/* NAVIGATION & HOVER DROPDOWN */
+.site-nav {
+  background: var(--nav-bg);
+  padding: 0.75rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 100; /* Keeps nav above gallery images */
 }
 
-body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #ffffff; }
+.site-nav a {
+  text-decoration: none;
+  color: var(--nav-text);
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  padding: 10px 15px;
+}
 
-.site-header { height: 45vh; background: url('header-bg.jpg') center/cover no-repeat fixed; display: flex; flex-direction: column; justify-content: space-between; }
-.site-title { font-family: var(--header-font); font-size: 6rem; letter-spacing: 0.4em; font-weight: 300; text-align: center; margin: auto; }
-.site-nav { background: var(--nav-bg); padding: 0.75rem 0; display: flex; justify-content: center; gap: 2rem; }
-.site-nav a { text-decoration: none; color: var(--nav-text); font-weight: 400; font-size: 0.9rem; letter-spacing: 0.1rem; text-transform: uppercase; }
+/* Dropdown Container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
 
-.content { max-width: 1200px; margin: auto; padding: 3rem; text-align: center; }
-.gallery { column-count: 3; column-gap: 2rem; }
+/* The "Works" Link */
+.dropbtn {
+  cursor: default;
+}
 
-.artwork { break-inside: avoid; margin-bottom: 3rem; cursor: pointer; }
-.img-container { width: 100%; min-height: 250px; background: #f9f9f9; }
-.artwork img { width: 100%; display: block; }
-.gallery-caption { margin-top: 15px; font-size: 0.9rem; color: #333; }
+/* Hidden Dropdown Content */
+.dropdown-content {
+  display: none; /* Hidden by default */
+  position: absolute;
+  background-color: white;
+  min-width: 220px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+  z-index: 1000;
+  top: 100%; /* Positions it directly below the 'Works' link */
+  left: 0;
+  padding: 10px 0;
+}
 
-#fullscreen-viewer { display: none; position: fixed; inset: 0; background: white; z-index: 9999; padding: 40px; flex-direction: row; gap: 40px; }
-.viewer-image-side { flex: 2; display: flex; align-items: center; justify-content: center; position: relative; }
-.viewer-image-side img { max-width: 100%; max-height: 80vh; object-fit: contain; }
-.viewer-text-side { flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left; padding-left: 30px; border-left: 1px solid #eee; }
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: #333;
+  padding: 12px 20px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
 
-.nav-btn { position: absolute; background: none; border: none; font-size: 2rem; cursor: pointer; }
-#prev-btn { left: 10px; } #next-btn { right: 10px; }
-#close-viewer { position: absolute; top: 20px; right: 30px; font-size: 3rem; cursor: pointer; }
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* THE MAGIC: Show menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Optional: Add a small arrow after "Works" */
+.dropbtn::after {
+  content: ' ▾';
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
