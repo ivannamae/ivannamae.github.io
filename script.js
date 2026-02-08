@@ -5,7 +5,9 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 
 function formatDate(dateString) {
   if (!dateString || !dateString.includes('-')) return dateString || "";
-  const [year, month] = dateString.split('-');
+  const parts = dateString.split('-');
+  const year = parts[0];
+  const month = parts[1];
   return `${monthNames[parseInt(month) - 1]} ${year}`;
 }
 
@@ -14,10 +16,11 @@ async function loadGallery() {
   if (!gallery) return;
 
   try {
-    const response = await fetch('art.json');
+    // Adding a timestamp to the URL prevents the browser from loading an "old" cached version of your json
+    const response = await fetch('art.json?v=' + new Date().getTime());
     const artworks = await response.json();
     
-    // Sort Newest to Oldest (supports YYYY-MM)
+    // Sort Newest to Oldest
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
@@ -28,13 +31,12 @@ async function loadGallery() {
         const figure = document.createElement("figure");
         figure.className = "artwork";
         
-        // Label format: Title, Month Year, Dimensions, Material
         const displayDate = formatDate(art.date);
         const dims = art.dimensions ? `, ${art.dimensions}` : "";
         const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
 
         figure.innerHTML = `
-          <img src="${art.images[0]}" alt="${art.title}" loading="lazy">
+          <img src="${art.images[0]}" alt="${art.title}" onerror="this.src='https://via.placeholder.com/400?text=Image+Missing'">
           <figcaption class="gallery-caption">${captionText}</figcaption>
         `;
         
@@ -43,18 +45,16 @@ async function loadGallery() {
       }
     });
   } catch (error) {
-    console.error("Error loading art.json", error);
+      console.error("Gallery failed to load. If viewing locally, you need a local server or to upload to GitHub.", error);
+      gallery.innerHTML = "<p>Loading artwork... if this stays, check art.json format.</p>";
   }
 }
 
 function openViewer(art) {
   currentArt = art;
   currentImgIndex = 0;
-  const viewer = document.getElementById("fullscreen-viewer");
-  if (viewer) {
-    viewer.style.display = "flex";
-    updateViewerContent();
-  }
+  document.getElementById("fullscreen-viewer").style.display = "flex";
+  updateViewerContent();
 }
 
 function updateViewerContent() {
@@ -87,4 +87,5 @@ document.getElementById("close-viewer").onclick = () => {
   document.getElementById("fullscreen-viewer").style.display = "none";
 };
 
-loadGallery();
+// Initialize
+window.onload = loadGallery;
