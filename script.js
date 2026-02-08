@@ -17,7 +17,7 @@ async function loadGallery() {
     const response = await fetch('art.json');
     const artworks = await response.json();
     
-    // Sort Newest to Oldest (Month-aware)
+    // Sort Newest to Oldest (supports YYYY-MM)
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
@@ -28,7 +28,7 @@ async function loadGallery() {
         const figure = document.createElement("figure");
         figure.className = "artwork";
         
-        // Label: Title, Month Year, Dimensions, Material
+        // Label format: Title, Month Year, Dimensions, Material
         const displayDate = formatDate(art.date);
         const dims = art.dimensions ? `, ${art.dimensions}` : "";
         const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
@@ -50,15 +50,17 @@ async function loadGallery() {
 function openViewer(art) {
   currentArt = art;
   currentImgIndex = 0;
-  document.getElementById("fullscreen-viewer").style.display = "flex";
-  updateViewerContent();
+  const viewer = document.getElementById("fullscreen-viewer");
+  if (viewer) {
+    viewer.style.display = "flex";
+    updateViewerContent();
+  }
 }
 
 function updateViewerContent() {
   document.getElementById("viewer-img").src = currentArt.images[currentImgIndex];
   document.getElementById("viewer-title").innerText = currentArt.title;
   
-  // Popup Meta: Month Year | Dimensions | Material
   const displayDate = formatDate(currentArt.date);
   const dims = currentArt.dimensions ? ` | ${currentArt.dimensions}` : "";
   document.getElementById("viewer-meta").innerText = `${displayDate}${dims} | ${currentArt.material}`;
