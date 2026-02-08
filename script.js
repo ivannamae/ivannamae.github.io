@@ -6,7 +6,9 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 function formatDate(dateString) {
   if (!dateString || !dateString.includes('-')) return dateString || "";
   const parts = dateString.split('-');
-  return `${monthNames[parseInt(parts[1]) - 1]} ${parts[0]}`;
+  const year = parts[0];
+  const month = parseInt(parts[1]);
+  return `${monthNames[month - 1]} ${year}`;
 }
 
 async function loadGallery() {
@@ -14,9 +16,10 @@ async function loadGallery() {
   if (!gallery) return;
 
   try {
-    const response = await fetch('art.json');
+    const response = await fetch('art.json?v=' + new Date().getTime());
     const artworks = await response.json();
     
+    // Sort Newest to Oldest based on the YYYY-MM date
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
@@ -31,12 +34,11 @@ async function loadGallery() {
         const dims = art.dimensions ? `, ${art.dimensions}` : "";
         const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
 
-        // Added 'onerror' to catch missing files
         figure.innerHTML = `
           <img src="${art.images[0]}" 
                alt="${art.title}" 
-               style="min-height: 200px; background: #f0f0f0;"
-               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Image+Not+Found+Check+Filename';">
+               style="min-height: 250px; background: #f0f0f0; display: block;"
+               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Image+Not+Found';">
           <figcaption class="gallery-caption">${captionText}</figcaption>
         `;
         
@@ -45,7 +47,7 @@ async function loadGallery() {
       }
     });
   } catch (error) {
-    console.error("Error loading gallery:", error);
+    console.error("Error loading gallery data:", error);
   }
 }
 
@@ -59,14 +61,12 @@ function openViewer(art) {
 function updateViewerContent() {
   const vImg = document.getElementById("viewer-img");
   vImg.src = currentArt.images[currentImgIndex];
-  vImg.onerror = function() {
-    this.src = 'https://via.placeholder.com/800x1000?text=Full+Image+Missing';
-  };
-
-  document.getElementById("viewer-title").innerText = currentArt.title;
   
+  // Viewer label formatting
   const displayDate = formatDate(currentArt.date);
   const dims = currentArt.dimensions ? ` | ${currentArt.dimensions}` : "";
+  
+  document.getElementById("viewer-title").innerText = currentArt.title;
   document.getElementById("viewer-meta").innerText = `${displayDate}${dims} | ${currentArt.material}`;
   document.getElementById("viewer-desc").innerText = currentArt.description || "";
 
@@ -82,13 +82,4 @@ document.getElementById("next-btn").onclick = (e) => {
 };
 
 document.getElementById("prev-btn").onclick = (e) => {
-  e.stopPropagation();
-  currentImgIndex = (currentImgIndex - 1 + currentArt.images.length) % currentArt.images.length;
-  updateViewerContent();
-};
-
-document.getElementById("close-viewer").onclick = () => {
-  document.getElementById("fullscreen-viewer").style.display = "none";
-};
-
-window.onload = loadGallery;
+  e.stopPropagation
