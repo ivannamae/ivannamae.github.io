@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const gallery = document.getElementById("gallery");
   const viewer = document.getElementById("fullscreen-viewer");
 
-  // 1. DYNAMIC GALLERY (For Works/Medium pages)
+  // 1. LOAD GALLERY FROM JSON
   if (gallery) {
     isJsonMode = true;
     const category = gallery.getAttribute("data-category");
@@ -14,54 +14,52 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("art.json")
       .then(response => response.json())
       .then(data => {
-        // Filter by category or show all
-        currentArtList = (category === "all") ? data : data.filter(item => item.category === category);
+        // Sort newest first
+        data.sort((a, b) => new Date(b.date) - new Date(a.date));
         
+        // Filter
+        currentArtList = (category === "all") ? data : data.filter(item => item.category === category);
+
         gallery.innerHTML = ""; 
         currentArtList.forEach((item, index) => {
           const figure = document.createElement("figure");
           figure.className = "artwork";
-          
-          // Using item.images[0] as the primary image
           figure.innerHTML = `
-            <img src="${item.images[0]}" alt="${item.title}">
+            <div class="img-container">
+              <img src="${item.images[0]}" alt="${item.title}">
+            </div>
             <figcaption class="gallery-caption">
               <strong>${item.title}</strong><br>
               ${item.date} | ${item.material}
             </figcaption>
           `;
-
-          figure.addEventListener("click", () => openViewer(index));
+          figure.onclick = () => openViewer(index);
           gallery.appendChild(figure);
         });
       })
-      .catch(err => console.error("Error: art.json could not be loaded.", err));
+      .catch(err => console.error("Could not load art.json", err));
   }
 
-  // 2. MANUAL TRIGGER (For index.html/home.html)
-  const triggers = document.querySelectorAll('.fullscreen-trigger');
-  triggers.forEach(img => {
-    img.addEventListener('click', () => {
+  // 2. TRIGGER FOR INDEX.HTML IMAGES
+  const manualTriggers = document.querySelectorAll('.fullscreen-trigger');
+  manualTriggers.forEach(img => {
+    img.onclick = () => {
       isJsonMode = false;
       document.getElementById("viewer-img").src = img.src;
-      document.getElementById("viewer-title").innerText = img.alt || "";
+      document.getElementById("viewer-title").innerText = img.alt || "Artwork";
       document.getElementById("viewer-meta").innerText = "";
       document.getElementById("viewer-desc").innerText = "";
       viewer.style.display = "flex";
       document.body.style.overflow = "hidden";
-    });
+    };
   });
 
-  // 3. VIEWER CONTROLS
-  const closeBtn = document.getElementById("close-viewer");
-  if (closeBtn) {
-    closeBtn.onclick = () => {
-      viewer.style.display = "none";
-      document.body.style.overflow = "auto";
-    };
-  }
+  // 3. VIEWER NAVIGATION
+  document.getElementById("close-viewer").onclick = () => {
+    viewer.style.display = "none";
+    document.body.style.overflow = "auto";
+  };
 
-  // Next/Prev Buttons
   document.getElementById("next-btn").onclick = (e) => {
     e.stopPropagation();
     if (!isJsonMode) return;
