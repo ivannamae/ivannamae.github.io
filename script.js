@@ -1,91 +1,84 @@
-let currentArt = null;
-let currentImgIndex = 0;
-
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-function formatDate(dateString) {
-  if (!dateString || !dateString.includes('-')) return dateString || "";
-  const parts = dateString.split('-');
-  return `${monthNames[parseInt(parts[1]) - 1]} ${parts[0]}`;
-}
-
-async function loadGallery() {
+document.addEventListener("DOMContentLoaded", () => {
   const gallery = document.getElementById("gallery");
-  if (!gallery) return;
+  const viewer = document.getElementById("fullscreen-viewer");
+  const viewerImg = document.getElementById("viewer-img");
+  const viewerTitle = document.getElementById("viewer-title");
+  const viewerMeta = document.getElementById("viewer-meta");
+  const viewerDesc = document.getElementById("viewer-desc");
+  const closeBtn = document.getElementById("close-viewer");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
 
-  try {
-    const response = await fetch('art.json?v=' + new Date().getTime());
-    const artworks = await response.json();
-    
-    artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
+  let currentArtList = [];
+  let currentIndex = 0;
 
-    const pageCategory = gallery.getAttribute("data-category");
-    gallery.innerHTML = ""; 
+  if (gallery) {
+    const category = gallery.getAttribute("data-category");
 
-    artworks.forEach(art => {
-      if (pageCategory === "all" || art.category === pageCategory) {
-        const figure = document.createElement("figure");
-        figure.className = "artwork";
-        
-        const displayDate = formatDate(art.date);
-        const dims = art.dimensions ? `, ${art.dimensions}` : "";
-        const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
+    fetch("art.json")
+      .then((response) => response.json())
+      .then((data) => {
+        // Filter by category if on a specific category page
+        currentArtList = category ? data.filter((item) => item.category === category) : data;
 
-        figure.innerHTML = `
-          <div class="img-container">
-            <img src="${art.images[0]}" 
-                 alt="${art.title}" 
-                 onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Check+Image+Filename';">
-          </div>
-          <figcaption class="gallery-caption">${captionText}</figcaption>
-        `;
-        
-        figure.onclick = () => openViewer(art);
-        gallery.appendChild(figure);
-      }
-    });
-  } catch (error) {
-    console.error("Could not load art.json. Ensure the file is not empty.", error);
+        currentArtList.forEach((item, index) => {
+          const card = document.createElement("div");
+          card.className = "art-card";
+          
+          // Ensure pathing is correct: assuming images are in the root
+          const mainImage = item.images[0];
+          
+          card.innerHTML = `
+            <img src="${mainImage}" alt="${item.title}" loading="lazy">
+            <div class="art-info">
+              <h3>${item.title}</h3>
+              <p>${item.date}</p>
+            </div>
+          `;
+
+          card.addEventListener("click", () => openViewer(index));
+          gallery.appendChild(card);
+        });
+      })
+      .catch((err) => console.error("Error loading art.json:", err));
   }
-}
 
-function openViewer(art) {
-  currentArt = art;
-  currentImgIndex = 0;
-  document.getElementById("fullscreen-viewer").style.display = "flex";
-  updateViewerContent();
-}
+  function openViewer(index) {
+    currentIndex = index;
+    const item = currentArtList[currentIndex];
 
-function updateViewerContent() {
-  const vImg = document.getElementById("viewer-img");
-  vImg.src = currentArt.images[currentImgIndex];
-  
-  const displayDate = formatDate(currentArt.date);
-  const dims = currentArt.dimensions ? ` | ${currentArt.dimensions}` : "";
-  
-  document.getElementById("viewer-title").innerText = currentArt.title;
-  document.getElementById("viewer-meta").innerText = `${displayDate}${dims} | ${currentArt.material}`;
-  document.getElementById("viewer-desc").innerText = currentArt.description || "";
+    viewerImg.src = item.images[0];
+    viewerTitle.innerText = item.title;
+    viewerMeta.innerText = `${item.date} | ${item.material} | ${item.dimensions}`;
+    viewerDesc.innerText = item.description;
 
-  const hasMultiple = currentArt.images.length > 1;
-  document.getElementById("prev-btn").style.display = hasMultiple ? "block" : "none";
-  document.getElementById("next-btn").style.display = hasMultiple ? "block" : "none";
-}
+    viewer.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Stop scrolling
+  }
 
-document.getElementById("next-btn").onclick = (e) => {
-  e.stopPropagation();
-  currentImgIndex = (currentImgIndex + 1) % currentArt.images.length;
-  updateViewerContent();
-};
+  closeBtn.addEventListener("click", () => {
+    viewer.style.display = "none";
+    document.body.style.overflow = "auto";
+  });
 
-document.getElementById("prev-btn").onclick = (e) => {
-  e.stopPropagation();
-  currentImgIndex = (currentImgIndex - 1 + currentArt.images.length) % currentArt.images.length;
-  updateViewerContent();
-};
+  // Close on background click
+  viewer.addEventListener("click", (e) => {
+    if (e.target === viewer) {
+      viewer.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+  });
 
-document.getElementById("close-viewer").onclick = () => {
-  document.getElementById("fullscreen-viewer").style.display = "none";
-};
+  // Navigation Logic
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % currentArtList.length;
+    openViewer(currentIndex);
+  });
 
-window.onload = loadGallery;
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + currentArtList.length) % currentArtList.length;
+    openViewer(currentIndex);
+  });
+});
