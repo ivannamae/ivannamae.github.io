@@ -6,9 +6,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 function formatDate(dateString) {
   if (!dateString || !dateString.includes('-')) return dateString || "";
   const parts = dateString.split('-');
-  const year = parts[0];
-  const month = parts[1];
-  return `${monthNames[parseInt(month) - 1]} ${year}`;
+  return `${monthNames[parseInt(parts[1]) - 1]} ${parts[0]}`;
 }
 
 async function loadGallery() {
@@ -16,11 +14,9 @@ async function loadGallery() {
   if (!gallery) return;
 
   try {
-    // Adding a timestamp to the URL prevents the browser from loading an "old" cached version of your json
-    const response = await fetch('art.json?v=' + new Date().getTime());
+    const response = await fetch('art.json');
     const artworks = await response.json();
     
-    // Sort Newest to Oldest
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
@@ -35,8 +31,12 @@ async function loadGallery() {
         const dims = art.dimensions ? `, ${art.dimensions}` : "";
         const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
 
+        // Added 'onerror' to catch missing files
         figure.innerHTML = `
-          <img src="${art.images[0]}" alt="${art.title}" onerror="this.src='https://via.placeholder.com/400?text=Image+Missing'">
+          <img src="${art.images[0]}" 
+               alt="${art.title}" 
+               style="min-height: 200px; background: #f0f0f0;"
+               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Image+Not+Found+Check+Filename';">
           <figcaption class="gallery-caption">${captionText}</figcaption>
         `;
         
@@ -45,8 +45,7 @@ async function loadGallery() {
       }
     });
   } catch (error) {
-      console.error("Gallery failed to load. If viewing locally, you need a local server or to upload to GitHub.", error);
-      gallery.innerHTML = "<p>Loading artwork... if this stays, check art.json format.</p>";
+    console.error("Error loading gallery:", error);
   }
 }
 
@@ -58,7 +57,12 @@ function openViewer(art) {
 }
 
 function updateViewerContent() {
-  document.getElementById("viewer-img").src = currentArt.images[currentImgIndex];
+  const vImg = document.getElementById("viewer-img");
+  vImg.src = currentArt.images[currentImgIndex];
+  vImg.onerror = function() {
+    this.src = 'https://via.placeholder.com/800x1000?text=Full+Image+Missing';
+  };
+
   document.getElementById("viewer-title").innerText = currentArt.title;
   
   const displayDate = formatDate(currentArt.date);
@@ -87,5 +91,4 @@ document.getElementById("close-viewer").onclick = () => {
   document.getElementById("fullscreen-viewer").style.display = "none";
 };
 
-// Initialize
 window.onload = loadGallery;
