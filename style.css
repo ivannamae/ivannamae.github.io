@@ -12,14 +12,15 @@ body {
   padding: 0;
   font-family: var(--body-font);
   line-height: 1.8;
-  background: #ffffff;
-  text-align: center; /* Ensures content is centered */
+  background-color: #ffffff;
+  color: #333;
+  text-align: center; /* Centers all text by default */
 }
 
 /* HEADER & BANNER */
 .site-header {
   height: 45vh;
-  background: url('header-bg.jpg') center / cover no-repeat fixed;
+  background: url('header-bg.jpg') center / cover no-repeat fixed; /* Ensure header-bg.jpg is in your root folder */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,82 +31,122 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1); /* Subtle overlay to make text pop */
 }
 
 .site-title {
   font-family: var(--header-font);
-  font-size: 5rem;
-  letter-spacing: 0.3em;
+  font-size: clamp(2rem, 8vw, 6rem);
+  letter-spacing: 0.4em;
   font-weight: 300;
   margin: 0;
   color: #000;
 }
 
+/* NAVIGATION & DROPDOWN */
 .site-nav {
   background: var(--nav-bg);
-  padding: 1rem 0;
+  padding: 0;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  position: relative;
+  z-index: 1000;
 }
 
-.site-nav a {
+.site-nav a, .dropbtn {
   text-decoration: none;
   color: var(--nav-text);
   text-transform: uppercase;
   font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   font-weight: bold;
+  padding: 15px 20px;
+  display: inline-block;
 }
 
-/* CONTENT ALIGNMENT */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+  z-index: 1;
+  text-align: left;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #c5e1f7;
+}
+
+/* CONTENT AREA */
 .content {
-  max-width: 1000px;
-  margin: 0 auto; /* Centers the whole page content */
-  padding: 3rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 20px;
 }
 
-/* IMAGES & GALLERY */
+/* IMAGE FIXES */
 img {
   max-width: 100%;
   height: auto;
-  display: inline-block;
+  display: block;
+  margin: 0 auto;
 }
 
 .fullscreen-trigger {
   cursor: pointer;
-  margin: 20px 0;
+  margin-top: 2rem;
+  transition: opacity 0.3s;
 }
 
+.fullscreen-trigger:hover {
+  opacity: 0.9;
+}
+
+/* GALLERY GRID */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 2rem;
+  gap: 40px;
+  margin-top: 3rem;
 }
 
-.artwork {
-  margin: 0;
+.artwork img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover; /* Keeps images uniform in size */
   cursor: pointer;
 }
 
-.img-container img {
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
+.gallery-caption {
+  margin-top: 15px;
+  font-size: 0.9rem;
 }
 
-/* VIEWER */
+/* FULLSCREEN VIEWER */
 #fullscreen-viewer {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   background: #fff;
-  z-index: 10000;
+  z-index: 9999;
   flex-direction: row;
 }
 
@@ -115,16 +156,18 @@ img {
   align-items: center;
   justify-content: center;
   position: relative;
+  background: #fcfcfc;
 }
 
-.viewer-image-side img {
+#viewer-img {
   max-height: 90vh;
   max-width: 90%;
+  object-fit: contain;
 }
 
 .viewer-text-side {
   flex: 1;
-  padding: 40px;
+  padding: 60px;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -132,15 +175,12 @@ img {
   border-left: 1px solid #eee;
 }
 
-.nav-btn {
-  position: absolute;
-  top: 50%;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-}
-
+#close-viewer { position: absolute; top: 20px; right: 30px; font-size: 2.5rem; cursor: pointer; }
+.nav-btn { position: absolute; top: 50%; font-size: 2rem; background: none; border: none; cursor: pointer; color: #bbb; }
 #prev-btn { left: 20px; }
 #next-btn { right: 20px; }
-#close-viewer { position: absolute; top: 20px; right: 20px; font-size: 2rem; cursor: pointer; }
+
+@media (max-width: 800px) {
+  #fullscreen-viewer { flex-direction: column; }
+  .viewer-text-side { border-left: none; padding: 20px; }
+}
