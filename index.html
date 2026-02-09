@@ -5,7 +5,7 @@
   <title>Ivanna Mae — Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-</head>
+</head>  
 <body>
 
 <header class="site-header">
@@ -15,7 +15,7 @@
   <nav class="site-nav">
     <a href="index.html">Home</a>
     <div class="dropdown">
-      <a href="works.html" class="dropbtn">Works</a>
+      <a href="works.html" class="dropbtn">Works ▾</a>
       <div class="dropdown-content">
         <a href="ceramics.html">Ceramics</a>
         <a href="digital.html">Digital Art</a>
@@ -34,9 +34,27 @@
   <section>
     <h2 style="font-size: 2.2rem;">Welcome — thank you for visiting.</h2>
     <p>This site presents selected works by Ivanna Mae across various media.</p>
-    <img src="featured-work.jpg" alt="Featured Work" style="width: 100%; max-width: 800px; margin-top: 2rem;">
+  </section>
+  
+  <section>
+    <h2>Current Status</h2>
+    <p>Currently working on new ceramic and mixed media pieces. Open to exhibitions and collaborations.</p>
   </section>
 </main>
+
+<div id="fullscreen-viewer">
+  <span id="close-viewer">×</span>
+  <div class="viewer-image-side">
+    <button id="prev-btn" class="nav-btn">❮</button>
+    <img id="viewer-img" src="">
+    <button id="next-btn" class="nav-btn">❯</button>
+  </div>
+  <div class="viewer-text-side">
+    <h2 id="viewer-title"></h2>
+    <p id="viewer-meta" class="meta"></p>
+    <p id="viewer-desc" class="description"></p>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
