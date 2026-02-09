@@ -1,7 +1,7 @@
 async function initPage() {
-  // 1. Instantly target and fade in all static text found on the page
-  const elements = document.querySelectorAll('.content h2, .content p, .content section');
-  elements.forEach((el, i) => {
+  // 1. Target all text for fade-in IMMEDIATELY
+  const textElements = document.querySelectorAll('.content h2, .content p, .content section');
+  textElements.forEach((el, i) => {
     setTimeout(() => {
       el.classList.add('slow-load');
     }, i * 150);
@@ -10,12 +10,12 @@ async function initPage() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
 
-  // 2. Only try to fetch JSON if there is a gallery on the page
+  // 2. Load Gallery
   try {
     const response = await fetch('art.json?v=' + new Date().getTime());
-    if (!response.ok) throw new Error("File not found");
-    
     const artworks = await response.json();
+    
+    // Sort Newest First
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
@@ -26,26 +26,29 @@ async function initPage() {
         const figure = document.createElement("figure");
         figure.className = "artwork";
         figure.innerHTML = `
-          <div class="img-container">
-            <img src="${art.images[0]}" alt="${art.title}">
-          </div>
+          <div class="img-container"><img src="${art.images[0]}" alt="${art.title}"></div>
           <figcaption class="gallery-caption">${art.title}, ${art.material}</figcaption>
         `;
         figure.onclick = () => openViewer(art);
         gallery.appendChild(figure);
         
-        // Staggered fade in for gallery items
-        setTimeout(() => figure.classList.add('slow-load'), (index + elements.length) * 100);
+        // Stagger fade-in for images and labels
+        setTimeout(() => {
+          figure.classList.add('slow-load');
+          figure.querySelector('.img-container').classList.add('slow-load');
+          figure.querySelector('.gallery-caption').classList.add('slow-load');
+        }, (index + textElements.length) * 100);
       }
     });
   } catch (error) {
-    console.warn("Gallery failed to load. If you are local, use Live Server.", error);
+    console.warn("Local JSON fetch blocked. Use 'Live Server' to see images.", error);
   }
 }
 
-// Global viewer logic remains unchanged to preserve your progress
+// Viewer (Preserved)
 function openViewer(art) {
-  document.getElementById("fullscreen-viewer").style.display = "flex";
+  const viewer = document.getElementById("fullscreen-viewer");
+  viewer.style.display = "flex";
   document.getElementById("viewer-img").src = art.images[0];
   document.getElementById("viewer-title").innerText = art.title;
   document.getElementById("viewer-meta").innerText = `${art.date} | ${art.material}`;
