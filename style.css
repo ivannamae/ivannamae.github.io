@@ -13,8 +13,8 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Hide content initially so JS can trigger fade-in */
-.content h2, .content p, .content figure, .gallery-caption, .img-container {
+/* IMPORTANT: Initial state for fade-in elements */
+.content h2, .content p, .artwork, .gallery-caption {
   opacity: 0;
 }
 
@@ -24,48 +24,65 @@
 
 body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #ffffff; }
 
-/* BANNER */
+/* HEADER & BANNER */
 .site-header {
   height: 45vh;
   background: url('header-bg.jpg') center/cover no-repeat fixed; 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   text-align: center;
 }
 .site-title { font-family: var(--header-font); font-size: 6rem; letter-spacing: 0.4em; font-weight: 300; margin: auto; }
 
-/* NAV */
-.site-nav { background: var(--nav-bg); padding: 0.75rem 0; display: flex; justify-content: center; gap: 2rem; position: relative; z-index: 100; }
-.site-nav a { text-decoration: none; color: var(--nav-text); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1rem; }
+/* NAVIGATION FIX: Aligns all tabs and the dropdown vertically */
+.site-nav { 
+  background: var(--nav-bg); 
+  padding: 0; /* Changed to 0 to allow height control */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; /* Vertically centers "Works" with the others */
+  gap: 2rem; 
+  position: relative; 
+  z-index: 100;
+  height: 50px; /* Fixed height for consistency */
+}
+
+.site-nav a, .dropbtn { 
+  text-decoration: none; 
+  color: var(--nav-text); 
+  text-transform: uppercase; 
+  font-size: 0.9rem; 
+  letter-spacing: 0.1rem;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+}
 
 /* DROPDOWN */
-.dropdown { position: relative; display: inline-block; }
+.dropdown { position: relative; height: 100%; display: flex; align-items: center; }
 .dropdown-content {
-  display: none; position: absolute; background: white; min-width: 220px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1); top: 100%; left: 0;
+  display: none; 
+  position: absolute; 
+  background: white; 
+  min-width: 220px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
+  top: 100%; 
+  left: 0;
 }
 .dropdown:hover .dropdown-content { display: block; }
-.dropdown-content a { color: black; padding: 12px 16px; display: block; text-align: left; }
+.dropdown-content a { color: black; padding: 12px 16px; display: block; text-align: left; height: auto; }
 
-/* CONTENT ALIGNMENT */
+/* CONTENT & ALIGNMENT */
 .content { max-width: 1200px; margin: auto; padding: 3rem; text-align: left; }
-
-/* Works Page specific centering */
 .works-header { text-align: center; width: 100%; margin-bottom: 3rem; }
-.works-page .content > section:first-of-type { text-align: center; margin-bottom: 4rem; }
-
-/* GALLERY */
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 3rem; }
-.artwork { cursor: pointer; display: block; }
+
 .img-container { width: 100%; aspect-ratio: 4/5; background: #f4f4f4; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .artwork img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gallery-caption { text-align: center; margin-top: 1rem; font-size: 0.9rem; }
 
-/* VIEWER (Preserved) */
+/* POPUP VIEWER (Preserved) */
 #fullscreen-viewer { display: none; position: fixed; inset: 0; background: white; z-index: 9999; padding: 40px; flex-direction: row; }
-.viewer-image-side { flex: 2; display: flex; align-items: center; justify-content: center; position: relative; }
-.viewer-image-side img { max-width: 100%; max-height: 85vh; object-fit: contain; }
-.viewer-text-side { flex: 1; padding: 40px; border-left: 1px solid #eee; text-align: left; }
 #close-viewer { position: absolute; top: 20px; right: 30px; font-size: 3rem; cursor: pointer; }
-.nav-btn { background: none; border: none; font-size: 2rem; cursor: pointer; padding: 20px; }
