@@ -9,12 +9,16 @@ function formatDate(dateString) {
   return `${monthNames[parseInt(parts[1]) - 1]} ${parts[0]}`;
 }
 
-async function loadGallery() {
-  const gallery = document.getElementById("gallery");
-  
-  // Apply slow-load to all static text on the page immediately
-  document.querySelectorAll('.content h2, .content p').forEach(el => el.classList.add('slow-load'));
+async function initPage() {
+  // Apply slow-load to ALL text and existing elements on the page
+  const elementsToFade = document.querySelectorAll('.content h2, .content p, .content section, .content figure, .gallery-caption');
+  elementsToFade.forEach((el, i) => {
+    setTimeout(() => {
+      el.classList.add('slow-load');
+    }, i * 150); // Staggered loading for a smoother effect
+  });
 
+  const gallery = document.getElementById("gallery");
   if (!gallery) return;
 
   try {
@@ -31,9 +35,6 @@ async function loadGallery() {
       if (pageCategory === "all" || art.category === pageCategory) {
         const figure = document.createElement("figure");
         figure.className = "artwork";
-        // Stagger the fade-in of images
-        figure.style.animationDelay = `${index * 0.1}s`;
-        figure.classList.add('slow-load');
         
         const displayDate = formatDate(art.date);
         const dims = art.dimensions ? `, ${art.dimensions}` : "";
@@ -43,13 +44,19 @@ async function loadGallery() {
           <div class="img-container">
             <img src="${art.images[0]}" 
                  alt="${art.title}" 
-                 onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Image+Not+Found';">
+                 onerror="this.onerror=null; this.src='https://via.placeholder.com/400x500?text=Check+File+Name';">
           </div>
           <figcaption class="gallery-caption">${captionText}</figcaption>
         `;
         
         figure.onclick = () => openViewer(art);
         gallery.appendChild(figure);
+        
+        // Ensure dynamically added elements also fade in
+        setTimeout(() => {
+          figure.classList.add('slow-load');
+          figure.querySelector('.gallery-caption').classList.add('slow-load');
+        }, index * 100);
       }
     });
   } catch (error) {
@@ -57,7 +64,7 @@ async function loadGallery() {
   }
 }
 
-// Viewer Functions (Backtrack protection: kept exactly as before)
+// Viewer Logic (unchanged to preserve functionality)
 function openViewer(art) {
   currentArt = art;
   currentImgIndex = 0;
@@ -68,7 +75,6 @@ function openViewer(art) {
 function updateViewerContent() {
   const vImg = document.getElementById("viewer-img");
   vImg.src = currentArt.images[currentImgIndex];
-  
   document.getElementById("viewer-title").innerText = currentArt.title;
   const displayDate = formatDate(currentArt.date);
   const dims = currentArt.dimensions ? ` | ${currentArt.dimensions}` : "";
@@ -80,6 +86,7 @@ function updateViewerContent() {
   document.getElementById("next-btn").style.display = hasMultiple ? "block" : "none";
 }
 
+// Global click listeners for navigation
 document.getElementById("next-btn").onclick = (e) => {
   e.stopPropagation();
   currentImgIndex = (currentImgIndex + 1) % currentArt.images.length;
@@ -96,4 +103,4 @@ document.getElementById("close-viewer").onclick = () => {
   document.getElementById("fullscreen-viewer").style.display = "none";
 };
 
-window.onload = loadGallery;
+window.onload = initPage;
