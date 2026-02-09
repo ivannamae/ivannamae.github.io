@@ -9,25 +9,10 @@
 
 body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #ffffff; }
 
-/* HEADER */
-.site-header {
-  height: 45vh;
-  background: url('header-bg.jpg') center/cover no-repeat fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+/* HEADER & NAV */
+.site-header { text-align: center; }
+.site-title { font-family: var(--header-font); font-size: 6rem; letter-spacing: 0.4em; font-weight: 300; margin: 4rem 0; }
 
-.site-title {
-  font-family: var(--header-font);
-  font-size: 6rem;
-  letter-spacing: 0.4em;
-  font-weight: 300;
-  text-align: center;
-  margin: auto;
-}
-
-/* HOVER DROPDOWN NAV */
 .site-nav {
   background: var(--nav-bg);
   padding: 0.75rem 0;
@@ -38,49 +23,63 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
   z-index: 100;
 }
 
-.site-nav a {
-  text-decoration: none;
-  color: var(--nav-text);
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 0.1rem;
-}
+.site-nav a { text-decoration: none; color: var(--nav-text); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1rem; }
 
+/* HOVER DROPDOWN */
 .dropdown { position: relative; display: inline-block; }
 .dropdown-content {
   display: none;
   position: absolute;
   background: white;
-  min-width: 200px;
+  min-width: 220px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   top: 100%;
   left: 0;
 }
 .dropdown:hover .dropdown-content { display: block; }
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  display: block;
-  text-align: left;
+.dropdown-content a { color: black; padding: 12px 16px; display: block; text-align: left; }
+
+/* CONTENT ALIGNMENT */
+.content { 
+  max-width: 1200px; 
+  margin: auto; 
+  padding: 3rem; 
+  text-align: left; /* Aligns description text to the left */
 }
 
-/* GALLERY GRID */
-.content { max-width: 1200px; margin: auto; padding: 3rem; text-align: center; }
+/* Specific Centering for Works Page Statement */
+.works-page .content > section:first-of-type {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+/* GALLERY SETTINGS */
 .gallery { 
   display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-  gap: 2rem; 
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+  gap: 3rem; 
 }
 
-.artwork { margin: 0; cursor: pointer; }
+.artwork { margin: 0; cursor: pointer; display: block; }
+
+/* This container ensures there is a clickable area even if image is missing */
 .img-container { 
   width: 100%; 
-  aspect-ratio: 4/5; /* Ensures a clickable area even if image fails */
+  aspect-ratio: 4 / 5; 
   background: #f0f0f0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-.artwork img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-caption { margin-top: 1rem; font-size: 0.9rem; }
+
+.artwork img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.gallery-caption { 
+  text-align: center; /* Keeps labels centered under images */
+  margin-top: 1rem; 
+  font-size: 0.9rem; 
+}
 
 /* POPUP VIEWER */
 #fullscreen-viewer {
@@ -89,5 +88,13 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
   inset: 0;
   background: white;
   z-index: 9999;
+  padding: 40px;
   flex-direction: row;
 }
+
+.viewer-image-side { flex: 2; display: flex; align-items: center; justify-content: center; position: relative; }
+.viewer-image-side img { max-width: 100%; max-height: 85vh; object-fit: contain; }
+.viewer-text-side { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #eee; text-align: left; }
+
+#close-viewer { position: absolute; top: 20px; right: 30px; font-size: 3rem; cursor: pointer; }
+.nav-btn { background: none; border: none; font-size: 2rem; cursor: pointer; padding: 20px; }
