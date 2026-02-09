@@ -11,28 +11,34 @@ function formatDate(dateString) {
 
 async function loadGallery() {
   const gallery = document.getElementById("gallery");
+  
+  // Apply slow-load to all static text on the page immediately
+  document.querySelectorAll('.content h2, .content p').forEach(el => el.classList.add('slow-load'));
+
   if (!gallery) return;
 
   try {
     const response = await fetch('art.json?v=' + new Date().getTime());
     const artworks = await response.json();
     
-    // SORT BY NEWEST FIRST
+    // Sort Newest First
     artworks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const pageCategory = gallery.getAttribute("data-category");
     gallery.innerHTML = ""; 
 
-    artworks.forEach(art => {
+    artworks.forEach((art, index) => {
       if (pageCategory === "all" || art.category === pageCategory) {
         const figure = document.createElement("figure");
         figure.className = "artwork";
+        // Stagger the fade-in of images
+        figure.style.animationDelay = `${index * 0.1}s`;
+        figure.classList.add('slow-load');
         
         const displayDate = formatDate(art.date);
         const dims = art.dimensions ? `, ${art.dimensions}` : "";
         const captionText = `${art.title}, ${displayDate}${dims}, ${art.material}`;
 
-        // Uses the .img-container class defined in CSS for clickability
         figure.innerHTML = `
           <div class="img-container">
             <img src="${art.images[0]}" 
@@ -51,6 +57,7 @@ async function loadGallery() {
   }
 }
 
+// Viewer Functions (Backtrack protection: kept exactly as before)
 function openViewer(art) {
   currentArt = art;
   currentImgIndex = 0;
