@@ -7,21 +7,36 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="works-page">
+
 <header class="site-header">
-  <div class="header-overlay"><h1 class="site-title">IVANNA&nbsp;&nbsp;MAE</h1></div>
+  <div class="header-overlay">
+    <h1 class="site-title">IVANNA&nbsp;&nbsp;MAE</h1>
+  </div>
   <nav class="site-nav">
     <a href="index.html">Home</a>
-    <div class="dropdown"><a href="works.html">Works ▾</a></div>
+    <div class="dropdown">
+      <a href="works.html" class="dropbtn">Works</a>
+      <div class="dropdown-content">
+        <a href="ceramics.html">Ceramics</a>
+        <a href="digital.html">Digital Art</a>
+        <a href="mixed-media.html">Mixed Media Sculpture</a>
+        <a href="drawing-painting.html">Drawing & Painting</a>
+        <a href="photography.html">Photography</a>
+      </div>
+    </div>
     <a href="about.html">About</a>
+    <a href="press.html">Press</a>
     <a href="contact.html">Contact</a>
   </nav>
 </header>
+
 <main class="content">
   <section>
-    <h2>Ceramics</h2>
-    <section class="gallery" id="gallery" data-category="Ceramics"></section>
+    <h2>Ceramics</h2> 
+    <section class="gallery" id="gallery" data-category="ceramics"></section>
   </section>
 </main>
+
 <div id="fullscreen-viewer">
   <span id="close-viewer">×</span>
   <div class="viewer-image-side">
@@ -31,10 +46,11 @@
   </div>
   <div class="viewer-text-side">
     <h2 id="viewer-title"></h2>
-    <p id="viewer-meta"></p>
-    <p id="viewer-desc"></p>
+    <p id="viewer-meta" class="meta"></p>
+    <p id="viewer-desc" class="description"></p>
   </div>
 </div>
+
 <script src="script.js"></script>
 </body>
 </html>
