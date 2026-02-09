@@ -9,12 +9,12 @@
 
 /* FADE IN ANIMATION */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .slow-load {
-  animation: fadeIn 1.5s ease-out forwards;
+  animation: fadeIn 1.2s ease-out forwards;
 }
 
 body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #ffffff; }
@@ -22,15 +22,23 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
 /* BANNER FIX */
 .site-header {
   height: 45vh;
-  /* Change 'header-bg.jpg' below if your file has a different name */
+  /* Ensure header-bg.jpg is in the same folder and correctly named */
   background: url('header-bg.jpg') center/cover no-repeat fixed; 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end; /* Places nav at the bottom of the header */
   text-align: center;
 }
 
-.site-title { font-family: var(--header-font); font-size: 6rem; letter-spacing: 0.4em; font-weight: 300; margin: auto; }
+.header-overlay { margin: auto; }
+
+.site-title { 
+  font-family: var(--header-font); 
+  font-size: 6rem; 
+  letter-spacing: 0.4em; 
+  font-weight: 300; 
+  color: #333;
+}
 
 /* NAVIGATION */
 .site-nav {
@@ -45,7 +53,7 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
 
 .site-nav a { text-decoration: none; color: var(--nav-text); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1rem; }
 
-/* HOVER DROPDOWN */
+/* DROPDOWN */
 .dropdown { position: relative; display: inline-block; }
 .dropdown-content {
   display: none;
@@ -67,8 +75,10 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
   text-align: left; 
 }
 
-/* Add slow-load to text sections */
-.content h2, .content p { opacity: 0; } 
+/* Hide elements initially to allow JavaScript to fade them in */
+.content h2, .content p, .content figure, .content section, .gallery-caption { 
+  opacity: 0; 
+}
 
 .works-page .content > section:first-of-type {
   text-align: center;
@@ -82,16 +92,17 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
   gap: 3rem; 
 }
 
-.artwork { margin: 0; cursor: pointer; display: block; opacity: 0; }
+.artwork { cursor: pointer; display: block; }
 
 .img-container { 
   width: 100%; 
   aspect-ratio: 4 / 5; 
-  background: #f0f0f0; 
+  background: #f4f4f4; 
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border: 1px solid #eee;
 }
 
 .artwork img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -102,7 +113,7 @@ body { margin: 0; font-family: var(--body-font); line-height: 1.8; background: #
   font-size: 0.9rem; 
 }
 
-/* POPUP VIEWER */
+/* POPUP VIEWER (preserved) */
 #fullscreen-viewer {
   display: none; 
   position: fixed;
